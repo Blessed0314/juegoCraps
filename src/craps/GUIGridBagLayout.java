@@ -4,15 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import javax.sound.sampled.*;
 
-/**
- * This class is used for ...
- * @autor Christian Daniel Villegas christian.villegas@correounivalle.edu.co
- * @version v.1.0.0 date:21/03/2023
- */
-public class GUI extends JFrame {
+public class GUIGridBagLayout extends JFrame {
     private static final String INITIAL_MESSAGE = "Welcome to the game of Craps"
             +"\npress the roll button to start the game"
             +"\nif your first roll is 7 or 11 you win with natural"
@@ -24,23 +17,17 @@ public class GUI extends JFrame {
 
     private Header headerProject;
     private JLabel dice1, dice2;
-    private JButton roll;
-    private JPanel panelDice, panelResults;
+    private JButton roll, help, exit;
+    private JPanel panelDice;
     private ImageIcon imageIcon;
-    private JTextArea results;
+    private JTextArea results, Messages;
     private Listener listener;
     private ModelCraps modelCraps;
 
-
-    /**
-     * Constructor of GUI class
-     */
-    public GUI() {
+    public GUIGridBagLayout(){
         initGUI();
-
         //Default JFrame configuration
         this.setTitle("Play Craps");
-        //this.setSize(200,100);
         this.pack();
         this.setResizable(true);
         this.setVisible(true);
@@ -48,42 +35,40 @@ public class GUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    /**
-     * This method is used to set up the default JComponent Configuration,
-     * create Listener and control Objects used for the GUI class
-     */
-    private void initGUI() {
+    private void initGUI(){
         //Set up JFrame Container's Layout
+        this.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
         //Create Listener Object or Control Object
         listener = new Listener();
         modelCraps = new ModelCraps();
         //Set up JComponents
         headerProject = new Header("Craps game table", Color.BLACK);
-        this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        this.add(headerProject,constraints);
 
-        imageIcon = new ImageIcon(getClass().getResource("/resource/6T.png"));
-        dice1 = new JLabel(imageIcon);
-        dice2 = new JLabel(imageIcon);
+        help = new JButton("?");
+        help.addActionListener(listener);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        this.add(help,constraints);
 
-        roll = new JButton("Roll");
-        roll.addActionListener(listener);
+        exit = new JButton("Exit");
+        exit.addActionListener(listener);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.LINE_END;
+        this.add(exit,constraints);
 
-        panelDice = new JPanel();
-        panelDice.setPreferredSize(new Dimension(300,235) );
-        panelDice.setBorder(BorderFactory.createTitledBorder("Your Dices"));
-        panelDice.add(dice1);
-        panelDice.add(dice2);
-        panelDice.add(roll);
-
-        this.add(panelDice,BorderLayout.CENTER);
-
-        results = new JTextArea(7,31);
-        results.setText(INITIAL_MESSAGE);
-        results.setBorder(BorderFactory.createTitledBorder("What should you do?"));;
-        JScrollPane scroll = new JScrollPane(results);
-        this.add(scroll,BorderLayout.EAST);
     }
-
     /**
      * Main process of the Java program
      * @param args Object used in order to send input data from command line when
@@ -91,13 +76,9 @@ public class GUI extends JFrame {
      */
     public static void main(String[] args){
         EventQueue.invokeLater(() -> {
-            GUI miProjectGUI = new GUI();
+            GUIGridBagLayout miProjectGUI = new GUIGridBagLayout();
         });
     }
-
-    /**
-     * inner class that extends an Adapter Class or implements Listeners used by GUI class
-     */
     private class Listener implements ActionListener {
 
         @Override
