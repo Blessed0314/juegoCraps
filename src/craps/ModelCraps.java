@@ -13,7 +13,7 @@ package craps;
 public class ModelCraps {
     private Dado dado1, dado2;
     private int launch, point, state, flag;
-    private String stateToString;
+    private String[] stateToString;
     private int[] caras;
 
     /**
@@ -24,6 +24,7 @@ public class ModelCraps {
         dado1 = new Dado();
         dado2 = new Dado();
         caras = new int[2];
+        stateToString = new String[2];
         flag = 0;
     }
 
@@ -77,11 +78,15 @@ public class ModelCraps {
         if (launch == point){
             state = 4;
             flag = 0;
+        }else{
+            if (launch == 7){
+                state = 5;
+                flag = 0;
+            }else{
+                state = 6;
+            }
         }
-        if (launch == 7){
-            state = 5;
-            flag = 0;
-        }
+
     }
 
     public int getLaunch() {
@@ -97,26 +102,31 @@ public class ModelCraps {
      * @return Message for the view class
      */
 
-    public String getStateToString() {
+    public String[] getStateToString() {
         switch (state){
-            case 1: stateToString = "You roll natural, you have won.";
+            case 1: stateToString[0] = "First roll = " + launch;
+                    stateToString[1] = "You roll natural, you have won.";
                     break;
-            case 2: stateToString = "You roll Craps, you have lost.";
+            case 2: stateToString[0] = "First roll = " + launch;;
+                    stateToString[1] = "You roll Craps, you have lost.";
                     break;
-            case 3: stateToString = "You set point on " + point + ", throw again!"
+            case 3: stateToString[0] = "First roll = " + launch + "\nPoint = " + point;
+                    stateToString[1] = "You set point on " + point + ", throw again!"
                                     +"\nIf you roll 7 you will lose but if you roll " + point +" again, you will win.";
                     break;
-            case 4: stateToString = "You roll " + point + " again!, you have won!";
+            case 4: stateToString[0] = "First roll = " + point + "\nPoint = " + point + "\nvalue of the new roll: "+launch;
+                    stateToString[1] = "You roll " + point + " again!, you have won!";
                     break;
-            case 5: stateToString = "You roll 7 before that " + point + ", you have lost.";
+            case 5: stateToString[0] = "First roll = " + point + "\nPoint = " + point + "\nvalue of the new roll: "+launch;
+                    stateToString[1] = "You roll 7 before that " + point + ", you have lost.";
                     break;
-            //default: stateToString = "you still don't get a point, roll again!";
+            case 6: stateToString[0] = "First roll = " + point + "\nPoint = " + point + "\nvalue of the new roll: "+launch;
+                    stateToString[1] = "You still stay on point, roll again!";
         }
         return stateToString;
     }
 
     public int[] getCaras() {
-
         return caras;
     }
 }

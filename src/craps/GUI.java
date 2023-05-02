@@ -2,10 +2,9 @@ package craps;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
-import javax.sound.sampled.*;
+import java.awt.event.*;
+
+
 
 /**
  * This class is used for ...
@@ -28,7 +27,7 @@ public class GUI extends JFrame {
     private JPanel panelDice, panelResults;
     private ImageIcon imageIcon;
     private JTextArea results;
-    private Listener listener;
+    private Listener listener, mouseListener;
     private ModelCraps modelCraps;
 
 
@@ -111,7 +110,7 @@ public class GUI extends JFrame {
             dice2.setIcon(imageIcon);
 
             modelCraps.determineGame();
-            results.setText(modelCraps.getStateToString());
+            results.setText(modelCraps.getStateToString()[1]);
         }
     }
 }
